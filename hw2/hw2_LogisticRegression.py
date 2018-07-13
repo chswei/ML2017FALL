@@ -27,10 +27,13 @@ class LogisticRegression_ADA(object):
         self.random_state = random_state
         self.shuffle = shuffle
         self.alpha = alpha
+    
     def fit(self, X, y):
         print(X.shape)
         
+        # add bias
         X = np.concatenate((np.ones((X.shape[0],1)),X), axis=1)
+        # np.random.normal generate random number from Gaussian Distribution
         rgen = np.random.RandomState(self.random_state)
         self.w_ = rgen.normal(loc=0.0, scale=0.01, size=X.shape[1])
         self.cost_ = []
@@ -40,11 +43,11 @@ class LogisticRegression_ADA(object):
             w_grad = np.zeros(X.shape[1])
             
             if self.shuffle:
-                X, y = self._shuffle(X,y)
+                X, y = self._shuffle(X,y)    # _shuffle下面定義
                 
-            for xi, target in zip(X,y): # iterate on single sample
-                cost = []               # record cost for each sample
-                output = self.sigmoid(self.net_input(xi))
+            for xi, target in zip(X,y):    # iterate on single sample
+                cost = []                  # record cost for each sample
+                output = self.sigmoid(self.net_input(xi))    # # sigmoid和net_input下面定義
                 error = (target - output)
                 w_grad = w_grad - 2*xi.dot(error)
                 cost.append(error)
